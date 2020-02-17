@@ -65,7 +65,7 @@ spec:
           effect: NoSchedule
       containers:
       - name: grc-ui
-        image: "{{ .Values.grcui.image.repository }}:{{ .Values.grcui.image.tag }}"
+        image: "{{ .Values.grcui.image.repository }}/{{ .Values.grcui.image.name }}:{{ .Values.grcui.image.tag }}{{ .Values.imageTagPostfix }}"
         imagePullPolicy: {{ .Values.grcui.image.pullPolicy }}
         resources:
         {{- toYaml .Values.grcui.resources | nindent 10 }}
@@ -83,22 +83,10 @@ spec:
           value: https://{{ .Release.Name }}-grcuiapi:4000/grcuiapi
         - name: searchApiUrl
           value: https://search-search-api:4010/searchapi
-        - name: cfcRouterUrl
-          value: {{ .Values.cfcRouterUrl }}
-        - name: PLATFORM_IDENTITY_PROVIDER_URL
-          value: {{ .Values.cfcRouterUrl }}/idprovider
+        - name: headerUrl
+          value: https://console-header:3000/multicloud/header
         - name: leftNav
-          value: {{ .Release.Name }}-nav
-        - name: WLP_CLIENT_ID
-          valueFrom:
-            secretKeyRef:
-              key: WLP_CLIENT_ID
-              name: platform-oidc-credentials
-        - name: WLP_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              key: WLP_CLIENT_SECRET
-              name: platform-oidc-credentials
+          value: console-header-nav
         ports:
         - containerPort: 3000
           protocol: TCP

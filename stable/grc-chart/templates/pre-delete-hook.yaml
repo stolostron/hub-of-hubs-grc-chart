@@ -61,8 +61,8 @@ spec:
       restartPolicy: Never
       containers:
       - name: pre-delete-job
-        image: "{{ .Values.compliance.repository }}:{{ .Values.compliance.tag }}"
-        imagePullPolicy: "{{ .Values.compliance.pullPolicy }}"
+        image: "{{ .Values.compliance.image.repository }}\{{ .Values.compliance.image.name }}:{{ .Values.compliance.image.tag }}{{ .Values.imageTagPostfix }}"
+        imagePullPolicy: "{{ .Values.compliance.image.pullPolicy }}"
         resources:
         {{- toYaml .Values.compliance.resources | nindent 10 }}
         securityContext:
