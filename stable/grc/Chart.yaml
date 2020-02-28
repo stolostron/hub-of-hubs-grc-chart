@@ -5,7 +5,7 @@
 apiVersion: v1
 appVersion: "1.0.0"
 description:  helm chart for multicloud grc
-name: grc-chart
+name: grc
 version: 1.0.0
 category: "Development"
 verified: "ICP"
