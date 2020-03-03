@@ -19,7 +19,7 @@ metadata:
 spec:
   secretName: {{ .Release.Name }}-grc-secrets
   issuerRef:
-    name: {{ .Release.Name }}-mcm-server-ca-issuer
+    name: multicluster-hub-mcm-server-ca-issuer
     kind: Issuer
   commonName: {{ template "grc.fullname" . }}
   isCA: true
