@@ -80,10 +80,6 @@ spec:
           value: https://{{ .Release.Name }}-grcuiapi:4000/grcuiapi
         - name: searchApiUrl
           value: https://search-search-api:4010/searchapi
-        - name: headerUrl
-          value: https://console-header:3000/multicloud/header
-        - name: leftNav
-          value: console-header-nav
         ports:
         - containerPort: 3000
           protocol: TCP
