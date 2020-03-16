@@ -18,7 +18,6 @@ nodeSelector:
   customLabelSelector: ""
   customLabelValue: ""
 imageTagPostfix: ""
-cfcRouterUrl: null
 
 compliance:
   image:
