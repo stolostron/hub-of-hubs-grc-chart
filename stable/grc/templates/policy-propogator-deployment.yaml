@@ -38,6 +38,7 @@ spec:
       annotations:
         seccomp.security.alpha.kubernetes.io/pod: docker/default
     spec:
+      serviceAccountName: hub-sa
       hostNetwork: false
       hostPID: false
       hostIPC: false
