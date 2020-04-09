@@ -59,7 +59,11 @@ spec:
           effect: NoSchedule
       containers:
       - name: grc-ui
+        {{- if .Values.imageShaDigests.grc_ui }}
+        image: "{{ .Values.grcui.image.repository }}/{{ .Values.grcui.image.name }}@{{ .Values.imageShaDigests.grc_ui }}"
+        {{- else }}
         image: "{{ .Values.grcui.image.repository }}/{{ .Values.grcui.image.name }}:{{ .Values.grcui.image.tag }}{{ .Values.imageTagPostfix }}"
+        {{- end }}
         imagePullPolicy: {{ .Values.grcui.image.pullPolicy }}
         resources:
         {{- toYaml .Values.grcui.resources | nindent 10 }}

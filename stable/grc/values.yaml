@@ -49,3 +49,7 @@ grcuiapi:
     requests:
       memory: "256Mi"
       cpu: "50m"
+imageShaDigests:
+  mcm_compliance: ""
+  grc_ui: ""
+  grc_ui_api: ""

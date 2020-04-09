@@ -61,7 +61,11 @@ spec:
           effect: NoSchedule
       containers:
       - name: policy-propagator-controller
+        {{- if .Values.imageShaDigests.mcm_compliance }}
+        image: "{{ .Values.compliance.image.repository }}/{{ .Values.compliance.image.name }}@{{ .Values.imageShaDigests.mcm_compliance }}"
+        {{- else}}
         image: "{{ .Values.compliance.image.repository }}/{{ .Values.compliance.image.name }}:{{ .Values.compliance.image.tag }}{{ .Values.imageTagPostfix }}"
+        {{- end}}
         imagePullPolicy: "{{ .Values.compliance.image.pullPolicy }}"
         resources:
         {{- toYaml .Values.compliance.resources | nindent 10 }}
