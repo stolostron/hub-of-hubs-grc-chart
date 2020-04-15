@@ -59,7 +59,7 @@ spec:
       containers:
       - name: grc-ui-api
         {{- if .Values.imageShaDigests.grc_ui_api }}
-        image: "{{ .Values.grcuiapi.image.repository }}/{{ .Values.grcuiapi.image.name }}:@{{ .Values.imageShaDigests.grc_ui_api }}"
+        image: "{{ .Values.grcuiapi.image.repository }}/{{ .Values.grcuiapi.image.name }}@{{ .Values.imageShaDigests.grc_ui_api }}"
         {{- else }}
         image: "{{ .Values.grcuiapi.image.repository }}/{{ .Values.grcuiapi.image.name }}:{{ .Values.grcuiapi.image.tag }}{{ .Values.imageTagPostfix }}"
         {{- end }}
