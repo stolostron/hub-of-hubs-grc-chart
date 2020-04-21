@@ -8,7 +8,7 @@ metadata:
   labels:
     app: {{ template "grc.name" . }}
     chart: {{ template "grc.chart" . }}
-    component: "mcm-grcui"
+    component: "ocm-grcui"
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -20,13 +20,13 @@ spec:
   selector:
     matchLabels:
       app: {{ template "grc.name" . }}
-      component: "mcm-grcui"
+      component: "ocm-grcui"
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: {{ template "grc.name" . }}
-        component: "mcm-grcui"
+        component: "ocm-grcui"
         release: {{ .Release.Name }}
         chart: {{ template "grc.chart" . }}
         heritage: {{ .Release.Service }}
@@ -37,6 +37,7 @@ spec:
       annotations:
         seccomp.security.alpha.kubernetes.io/pod: docker/default
     spec:
+      serviceAccountName: {{ .Release.Name }}-grc-sa
       hostNetwork: false
       hostPID: false
       hostIPC: false

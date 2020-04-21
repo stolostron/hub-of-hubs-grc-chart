@@ -1,26 +1,25 @@
 # Copyright (c) 2020 Red Hat, Inc.
 
-apiVersion: v1
-kind: Service
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
 metadata:
-  name: {{ .Release.Name }}-grcui
+  name: {{ .Release.Name }}-grc-rolebinding
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ template "grc.name" . }}
-    component: "ocm-grcui"
     chart: {{ template "grc.chart" . }}
+    component: "ocm-grc-rolebinding"
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/name: {{ template "grc.name" . }}
     helm.sh/chart: {{ template "grc.chart" . }}
-spec:
-  ports:
-    - port: 3000
-      targetPort: 3000
-      protocol: TCP
-      name: http
-  selector:
-    app: {{ template "grc.name" . }}
-    component: "ocm-grcui"
-    release: {{ .Release.Name }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Release.Name }}-grc-sa
+    namespace: {{ .Release.Namespace }}

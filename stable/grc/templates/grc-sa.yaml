@@ -1,26 +1,17 @@
 # Copyright (c) 2020 Red Hat, Inc.
 
 apiVersion: v1
-kind: Service
+kind: ServiceAccount
 metadata:
-  name: {{ .Release.Name }}-grcui
+  name: {{ .Release.Name }}-grc-sa
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ template "grc.name" . }}
-    component: "ocm-grcui"
     chart: {{ template "grc.chart" . }}
+    component: "ocm-grc-sa"
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/name: {{ template "grc.name" . }}
     helm.sh/chart: {{ template "grc.chart" . }}
-spec:
-  ports:
-    - port: 3000
-      targetPort: 3000
-      protocol: TCP
-      name: http
-  selector:
-    app: {{ template "grc.name" . }}
-    component: "ocm-grcui"
-    release: {{ .Release.Name }}

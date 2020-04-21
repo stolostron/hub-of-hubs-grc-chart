@@ -8,7 +8,7 @@ metadata:
     app: {{ template "grc.name" . }}
     chart: {{ template "grc.chart" . }}
     release: {{ .Release.Name }}
-    component: "mcm-grcuiapi"
+    component: "ocm-grcuiapi"
     heritage: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}

@@ -6,7 +6,7 @@ metadata:
   name: {{ .Release.Name }}-grcuiapi
   labels:
     app: {{ template "grc.name" . }}
-    component: "mcm-grcuiapi"
+    component: "ocm-grcuiapi"
     chart: {{ template "grc.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -22,5 +22,5 @@ spec:
       name: http
   selector:
     app: {{ template "grc.name" . }}
-    component: "mcm-grcuiapi"
+    component: "ocm-grcuiapi"
     release: {{ .Release.Name }}
