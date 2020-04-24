@@ -59,12 +59,8 @@ spec:
           effect: NoSchedule
       containers:
       - name: grc-ui-api
-        {{- if .Values.imageShaDigests.grc_ui_api }}
-        image: "{{ .Values.grcuiapi.image.repository }}/{{ .Values.grcuiapi.image.name }}@{{ .Values.imageShaDigests.grc_ui_api }}"
-        {{- else }}
-        image: "{{ .Values.grcuiapi.image.repository }}/{{ .Values.grcuiapi.image.name }}:{{ .Values.grcuiapi.image.tag }}{{ .Values.imageTagPostfix }}"
-        {{- end }}
-        imagePullPolicy: {{ .Values.grcuiapi.image.pullPolicy }}
+        image: {{ .Values.global.imageOverrides.grc_ui_api }}
+        imagePullPolicy: {{ .Values.global.pullPolicy }}
         resources:
         {{- toYaml .Values.grcuiapi.resources | nindent 10 }}
         securityContext:
