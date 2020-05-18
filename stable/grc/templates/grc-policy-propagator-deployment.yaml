@@ -1,39 +1,39 @@
 # Copyright (c) 2020 Red Hat, Inc.
-
-apiVersion: batch/v1
-kind: Job
+kind: Deployment
+apiVersion: apps/v1
 metadata:
-  name: {{ .Release.Name }}-policy-postinstall
+  name: {{ .Release.Name }}-policy-propogator
   labels:
     app: {{ template "grc.name" . }}
     chart: {{ template "grc.chart" . }}
-    component: {{ .Release.Name }}-policy-postinstall
+    component: "ocm-policy-propogator"
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/name: {{ template "grc.name" . }}
     helm.sh/chart: {{ template "grc.chart" . }}
-  annotations:
-    # This is what defines this resource as a hook. Without this line, the
-    # job is considered part of the release.
-    "helm.sh/hook": pre-delete
-    "helm.sh/hook-weight": "1"
-    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "grc.name" . }}
+      component: "ocm-policy-propogator"
+      release: {{ .Release.Name }}
   template:
     metadata:
-      name: {{ .Release.Name }}-policy-postinstall
       labels:
         app: {{ template "grc.name" . }}
-        chart: {{ template "grc.chart" . }}
-        component: {{ .Release.Name }}-policy-postinstall
+        component: "ocm-policy-propogator"
         release: {{ .Release.Name }}
+        chart: {{ template "grc.chart" . }}
         heritage: {{ .Release.Service }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/name: {{ template "grc.name" . }}
         helm.sh/chart: {{ template "grc.chart" . }}
+      annotations:
+        seccomp.security.alpha.kubernetes.io/pod: docker/default
     spec:
       serviceAccountName: {{ .Release.Name }}-grc-sa
       hostNetwork: false
@@ -56,13 +56,12 @@ spec:
         - key: dedicated
           operator: Exists
           effect: NoSchedule
-      restartPolicy: Never
       containers:
-      - name: pre-delete-job
-        image: {{ .Values.global.imageOverrides.mcm_compliance }}
+      - name: governance-policy-propagator
+        image: {{ .Values.global.imageOverrides.governance_policy_propagator}}
         imagePullPolicy: "{{ .Values.global.pullPolicy }}"
         resources:
-        {{- toYaml .Values.compliance.resources | nindent 10 }}
+        {{- toYaml .Values.governance.resources | nindent 10 }}
         securityContext:
           privileged: false
           readOnlyRootFilesystem: true
@@ -71,8 +70,34 @@ spec:
           capabilities:
             drop:
             - ALL
-        command: ["uninstall-crd"]
-        args: ["--removelist=compliances,policies,alerttargets"]
+        command: ["governance-policy-propagator"]
+        env:
+          - name: WATCH_NAMESPACE
+            value: ""
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: OPERATOR_NAME
+            value: "governance-policy-propagator"
+        # args:
+        #   - "-logtostderr=true"
+        #   - "-v=5"
+        #   {{- if gt .Values.replicas 1.0 }}
+        #   - "-leaderElect=true"
+        #   {{- end }}
+        livenessProbe:
+          exec:
+            command:
+            - ls
+          initialDelaySeconds: 15
+          periodSeconds: 15
+        readinessProbe:
+          exec:
+            command:
+            - ls
+          initialDelaySeconds: 15
+          periodSeconds: 15
         volumeMounts:
         - name: tmp
           mountPath: "/tmp"

@@ -1,14 +1,13 @@
 # Copyright (c) 2020 Red Hat, Inc.
-
+kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
 metadata:
-  name: {{ .Release.Name }}-grc-clusterrolebinding
+  name: {{ .Release.Name }}-grc-rolebinding
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ template "grc.name" . }}
     chart: {{ template "grc.chart" . }}
-    component: "ocm-grc-clusterrolebinding"
+    component: "ocm-grc-rolebinding"
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -17,9 +16,9 @@ metadata:
     helm.sh/chart: {{ template "grc.chart" . }}
 roleRef:
   kind: ClusterRole
-  name: {{ .Release.Name }}-grc-clusterrole
+  name: {{ .Release.Name }}-grc-role
   apiGroup: rbac.authorization.k8s.io
 subjects:
   - kind: ServiceAccount
     name: {{ .Release.Name }}-grc-sa
-    namespace: {{ .Release.Namespace }}
+    
