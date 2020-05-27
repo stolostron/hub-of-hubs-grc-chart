@@ -32,8 +32,6 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/name: {{ template "grc.name" . }}
         helm.sh/chart: {{ template "grc.chart" . }}
-      annotations:
-        seccomp.security.alpha.kubernetes.io/pod: docker/default
     spec:
       serviceAccountName: {{ .Release.Name }}-grc-sa
       hostNetwork: false
