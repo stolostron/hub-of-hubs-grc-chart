@@ -50,6 +50,26 @@ spec:
                 {{- range .Values.arch }}
                 - {{ . }}
                 {{- end }}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 70
+            podAffinityTerm:
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - governance-policy-propagator
+          - weight: 35
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - governance-policy-propagator
       tolerations:
         - key: dedicated
           operator: Exists
@@ -106,12 +126,7 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.pullSecret }}
       {{- end }}
-      {{- if .Values.nodeSelector.enabled }}
+      {{- with .Values.hubconfig.nodeSelector }}
       nodeSelector:
-      {{- if .Values.nodeSelector.os }}
-        "beta.kubernetes.io/os" : {{ .Values.nodeSelector.os }}
-      {{- end }}
-      {{- if .Values.nodeSelector.customLabelSelector }}
-        {{ .Values.nodeSelector.customLabelSelector }} : {{ .Values.nodeSelector.customLabelValue}}
-      {{- end }}
+      {{ toYaml . | indent 8 }}
       {{- end }}

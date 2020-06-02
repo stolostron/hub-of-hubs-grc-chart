@@ -5,7 +5,6 @@ global:
     grc_ui: ""
     grc_ui_api: ""
   pullPolicy: Always
-  
 
 arch:
   - amd64
@@ -13,11 +12,6 @@ arch:
   - s390x
 replicas: 1
 pullSecret: null
-nodeSelector:
-  enabled: false
-  os: ""
-  customLabelSelector: ""
-  customLabelValue: ""
 
 governance:
   resources:
@@ -34,3 +28,6 @@ grcuiapi:
     requests:
       memory: "256Mi"
       cpu: "50m"
+
+hubconfig:
+  nodeSelector: null

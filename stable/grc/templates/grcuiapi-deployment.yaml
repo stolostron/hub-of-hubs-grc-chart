@@ -51,6 +51,26 @@ spec:
                 {{- range .Values.arch }}
                 - {{ . }}
                 {{- end }}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 70
+            podAffinityTerm:
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - grc-ui-api
+          - weight: 35
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - grc-ui-api
       tolerations:
         - key: dedicated
           operator: Exists
@@ -109,12 +129,7 @@ spec:
             path: grcuiapi.crt
           - key: tls.key
             path: grcuiapi.key
-      {{- if .Values.nodeSelector.enabled }}
+      {{- with .Values.hubconfig.nodeSelector }}
       nodeSelector:
-      {{- if .Values.nodeSelector.os }}
-        "beta.kubernetes.io/os" : {{ .Values.nodeSelector.os }}
-      {{- end }}
-      {{- if .Values.nodeSelector.customLabelSelector }}
-        {{ .Values.nodeSelector.customLabelSelector }} : {{ .Values.nodeSelector.customLabelValue}}
-      {{- end }}
+      {{ toYaml . | indent 8 }}
       {{- end }}
