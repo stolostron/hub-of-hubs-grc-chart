@@ -59,7 +59,7 @@ rules:
 - apiGroups:
   - apps
   resourceNames:
-  - governance-policy-propagator
+  - {{ .Release.Name }}-policy-propogator
   resources:
   - deployments/finalizers
   verbs:
