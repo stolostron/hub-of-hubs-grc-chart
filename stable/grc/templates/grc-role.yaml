@@ -57,9 +57,15 @@ rules:
   - get
   - create
 - apiGroups:
+  - apps.open-cluster-management.io
+  resources:
+  - '*'
+  verbs:
+  - update
+- apiGroups:
   - apps
   resourceNames:
-  - {{ .Release.Name }}-policy-propogator
+  - {{ .Release.Name }}-policy-propagator
   resources:
   - deployments/finalizers
   verbs:
