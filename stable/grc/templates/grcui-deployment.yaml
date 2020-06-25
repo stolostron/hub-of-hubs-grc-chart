@@ -16,7 +16,7 @@ metadata:
     app.kubernetes.io/name: {{ template "grc.name" . }}
     helm.sh/chart: {{ template "grc.chart" . }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.hubconfig.replicaCount }}
   selector:
     matchLabels:
       app: {{ template "grc.name" . }}

@@ -14,7 +14,7 @@ metadata:
     app.kubernetes.io/name: {{ template "grc.name" . }}
     helm.sh/chart: {{ template "grc.chart" . }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.hubconfig.replicaCount }}
   selector:
     matchLabels:
       app: {{ template "grc.name" . }}
@@ -98,12 +98,6 @@ spec:
                 fieldPath: metadata.name
           - name: OPERATOR_NAME
             value: "governance-policy-propagator"
-        # args:
-        #   - "-logtostderr=true"
-        #   - "-v=5"
-        #   {{- if gt .Values.replicas 1.0 }}
-        #   - "-leaderElect=true"
-        #   {{- end }}
         livenessProbe:
           exec:
             command:

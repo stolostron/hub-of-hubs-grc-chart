@@ -10,7 +10,6 @@ arch:
   - amd64
   - ppc64le
   - s390x
-replicas: 1
 pullSecret: null
 
 governance:
@@ -31,3 +30,4 @@ grcuiapi:
 
 hubconfig:
   nodeSelector: null
+  replicaCount: 1
