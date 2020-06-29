@@ -1,4 +1,7 @@
 # Copyright (c) 2020 Red Hat, Inc.
+
+org: open-cluster-management
+
 global:
   imageOverrides:
     governance_policy_propagator: ""
