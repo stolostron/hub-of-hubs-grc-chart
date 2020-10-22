@@ -113,7 +113,7 @@ spec:
           timeoutSeconds: 1
         volumeMounts:
         - name: uiapi-certs
-          mountPath: /opt/ibm/grc-ui-api/sslcert
+          mountPath: /opt/app-root/src/grc-ui-api/sslcert
       {{- if .Values.pullSecret }}
       imagePullSecrets:
       - name: {{ .Values.pullSecret }}
