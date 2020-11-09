@@ -25,6 +25,7 @@ spec:
       labels:
         app: {{ template "grc.name" . }}
         component: "ocm-policy-propagator"
+        name: governance-policy-propagator
         release: {{ .Release.Name }}
         chart: {{ template "grc.chart" . }}
         heritage: {{ .Release.Service }}
@@ -57,7 +58,7 @@ spec:
               topologyKey: topology.kubernetes.io/zone
               labelSelector:
                 matchExpressions:
-                - key: app
+                - key: name
                   operator: In
                   values:
                   - governance-policy-propagator
@@ -66,7 +67,7 @@ spec:
               topologyKey: kubernetes.io/hostname
               labelSelector:
                 matchExpressions:
-                - key: app
+                - key: name
                   operator: In
                   values:
                   - governance-policy-propagator
