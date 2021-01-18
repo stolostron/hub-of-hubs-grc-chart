@@ -24,6 +24,7 @@ spec:
     metadata:
       labels:
         app: {{ template "grc.name" . }}
+        ocm-antiaffinity-selector: "grcpolicypropagator"
         component: "ocm-policy-propagator"
         name: governance-policy-propagator
         release: {{ .Release.Name }}
@@ -58,19 +59,19 @@ spec:
               topologyKey: topology.kubernetes.io/zone
               labelSelector:
                 matchExpressions:
-                - key: name
+                - key: ocm-antiaffinity-selector
                   operator: In
                   values:
-                  - governance-policy-propagator
+                  - grcpolicypropagator
           - weight: 35
             podAffinityTerm:
               topologyKey: kubernetes.io/hostname
               labelSelector:
                 matchExpressions:
-                - key: name
+                - key: ocm-antiaffinity-selector
                   operator: In
                   values:
-                  - governance-policy-propagator
+                  - grcpolicypropagator
       tolerations:
         - key: dedicated
           operator: Exists

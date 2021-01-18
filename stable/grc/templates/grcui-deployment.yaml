@@ -26,6 +26,7 @@ spec:
     metadata:
       labels:
         app: {{ template "grc.name" . }}
+        ocm-antiaffinity-selector: "grcui"
         component: "ocm-grcui"
         release: {{ .Release.Name }}
         chart: {{ template "grc.chart" . }}
@@ -59,19 +60,19 @@ spec:
               topologyKey: topology.kubernetes.io/zone
               labelSelector:
                 matchExpressions:
-                - key: app
+                - key: ocm-antiaffinity-selector
                   operator: In
                   values:
-                  - grc-ui
+                  - grcui
           - weight: 35
             podAffinityTerm:
               topologyKey: kubernetes.io/hostname
               labelSelector:
                 matchExpressions:
-                - key: app
+                - key: ocm-antiaffinity-selector
                   operator: In
                   values:
-                  - grc-ui
+                  - grcui
       tolerations:
         - key: dedicated
           operator: Exists
