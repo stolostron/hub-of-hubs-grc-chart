@@ -63,6 +63,12 @@ rules:
   verbs:
   - update
 - apiGroups:
+  - operator.open-cluster-management.io
+  resources:
+  - multiclusterhubs
+  verbs:
+  - get
+- apiGroups:
   - apps
   resourceNames:
   - {{ .Release.Name }}-policy-propagator

@@ -27,3 +27,38 @@ spec:
               number: 3000
         path: /multicloud/policies
         pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: {{ .Release.Name }}-grcui
+            port:
+              number: 3000
+        path: /multicloud/welcome
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: {{ .Release.Name }}-grcui
+            port:
+              number: 3000
+        path: /multicloud/logout
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: {{ .Release.Name }}-grcui
+            port:
+              number: 3000
+        path: /multicloud/common/configure
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: {{ .Release.Name }}-grcui
+            port:
+              number: 3000
+        path: /multicloud/common/username
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: {{ .Release.Name }}-grcui
+            port:
+              number: 3000
+        path: /multicloud/common/version
+        pathType: ImplementationSpecific
