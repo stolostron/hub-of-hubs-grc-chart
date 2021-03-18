@@ -127,12 +127,17 @@ spec:
         secret:
           secretName: {{ .Release.Name }}-grc-secrets
           items:
-          - key: ca.crt
-            path: grcuiapica.crt
           - key: tls.crt
             path: grcuiapi.crt
           - key: tls.key
             path: grcuiapi.key
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: service-ca.crt
+            path: grcuiapica.crt
+          name: grc-ca-bundle
+        name: ca-certs
       {{- with .Values.hubconfig.nodeSelector }}
       nodeSelector:
       {{ toYaml . | indent 8 }}
