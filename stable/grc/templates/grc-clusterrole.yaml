@@ -87,3 +87,9 @@ rules:
   - 'tokenreviews'
   verbs:
   - create
+- apiGroups:
+  - '*'
+  resources:
+  - '*/finalizers'
+  verbs:
+  - update
