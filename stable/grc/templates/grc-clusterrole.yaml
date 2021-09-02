@@ -101,6 +101,13 @@ rules:
   - '*/finalizers'
   verbs:
   - update
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
 
 ---
 
