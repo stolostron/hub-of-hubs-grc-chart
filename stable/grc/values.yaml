@@ -7,6 +7,7 @@ global:
     governance_policy_propagator: ""
     grc_ui: ""
     grc_ui_api: ""
+    kube_rbac_proxy: ""
   pullPolicy: Always
 
 arch:

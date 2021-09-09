@@ -81,7 +81,7 @@ spec:
           operator: Exists
       containers:
       - name: kube-rbac-proxy
-        image: registry.redhat.io/openshift4/ose-kube-rbac-proxy:v4.7
+        image: {{ .Values.global.imageOverrides.kube_rbac_proxy}}
         imagePullPolicy: "{{ .Values.global.pullPolicy }}"
         args:
         - --secure-listen-address=0.0.0.0:8443
