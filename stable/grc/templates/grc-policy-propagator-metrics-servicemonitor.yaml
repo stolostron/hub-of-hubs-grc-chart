@@ -28,7 +28,7 @@ spec:
   jobLabel: ocm-grc-policy-propagator
   namespaceSelector:
     matchNames:
-    - open-cluster-management
+    - {{ .Release.Namespace }}
   selector:
     matchLabels:
       app: {{ template "grc.name" . }}
