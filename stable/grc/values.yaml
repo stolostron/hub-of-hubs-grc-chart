@@ -8,7 +8,7 @@ global:
     grc_ui: ""
     grc_ui_api: ""
     kube_rbac_proxy: ""
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 arch:
   - amd64
