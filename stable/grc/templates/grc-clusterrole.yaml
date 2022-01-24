@@ -108,6 +108,23 @@ rules:
   verbs:
   - get
   - list
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resourceNames:
+  - policy-encryption-key
+  resources:
+  - secrets
+  verbs:
+  - delete
+  - patch
+  - update
+  - watch
 
 ---
 
