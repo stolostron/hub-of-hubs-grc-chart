@@ -49,9 +49,7 @@ spec:
               - key: beta.kubernetes.io/arch
                 operator: In
                 values:
-                {{- range .Values.arch }}
-                - {{ . }}
-                {{- end }}
+                {{- toYaml .Values.arch | nindent 18}}
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 70
@@ -72,13 +70,10 @@ spec:
                   operator: In
                   values:
                   - grcuiapi
+      {{- with .Values.hubconfig.tolerations }}
       tolerations:
-        - key: dedicated
-          operator: Exists
-          effect: NoSchedule
-        - effect: NoSchedule 
-          key: node-role.kubernetes.io/infra 
-          operator: Exists
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - name: grc-ui-api
         image: {{ .Values.global.imageOverrides.grc_ui_api }}
@@ -149,5 +144,5 @@ spec:
         name: ca-certs
       {{- with .Values.hubconfig.nodeSelector }}
       nodeSelector:
-      {{ toYaml . | indent 8 }}
+      {{- toYaml . | nindent 8 }}
       {{- end }}
