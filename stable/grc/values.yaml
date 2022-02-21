@@ -5,6 +5,7 @@ org: open-cluster-management
 global:
   imageOverrides:
     governance_policy_propagator: ""
+    governance_policy_addon_controller: ""
     grc_ui: ""
     grc_ui_api: ""
     kube_rbac_proxy: ""

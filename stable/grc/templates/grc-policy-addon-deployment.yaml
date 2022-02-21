@@ -1,0 +1,113 @@
+# Copyright (c) 2022 Red Hat, Inc.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-policy-propagator
+  labels:
+    app: {{ template "grc.name" . }}
+    chart: {{ template "grc.chart" . }}
+    component: "ocm-policy-addon-ctrl"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: {{ template "grc.name" . }}
+    helm.sh/chart: {{ template "grc.chart" . }}
+spec:
+  replicas: {{ .Values.hubconfig.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "grc.name" . }}
+      component: "ocm-policy-addon-ctrl"
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: manager
+      labels:
+        app: {{ template "grc.name" . }}
+        ocm-antiaffinity-selector: "grcpolicyaddon"
+        component: "ocm-policy-addon-ctrl"
+        name: governance-policy-addon-controller
+        release: {{ .Release.Name }}
+        chart: {{ template "grc.chart" . }}
+        heritage: {{ .Release.Service }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/name: {{ template "grc.name" . }}
+        helm.sh/chart: {{ template "grc.chart" . }}
+    spec:
+      serviceAccountName: grc-policy-addon-sa
+      hostNetwork: false
+      hostPID: false
+      hostIPC: false
+      securityContext:
+        runAsNonRoot: true
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                {{- toYaml .Values.arch | nindent 18}}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 70
+            podAffinityTerm:
+              topologyKey: topology.kubernetes.io/zone
+              labelSelector:
+                matchExpressions:
+                - key: ocm-antiaffinity-selector
+                  operator: In
+                  values:
+                  - grcpolicyaddon
+          - weight: 35
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchExpressions:
+                - key: ocm-antiaffinity-selector
+                  operator: In
+                  values:
+                  - grcpolicyaddon
+      {{- with .Values.hubconfig.tolerations }}
+      tolerations:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}      
+      containers:
+      - args:
+        - controller
+        command:
+        - governance-policy-addon-controller
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: SIMULATION_MODE
+          value: "on"
+        image: {{ .Values.global.imageOverrides.governance_policy_addon_controller }}
+        imagePullPolicy: "{{ .Values.global.pullPolicy }}"
+        name: manager
+        resources:
+        {{- toYaml .Values.governance.resources | nindent 10 }}
+        securityContext:
+          privileged: false
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+            - ALL
+      terminationGracePeriodSeconds: 10
+      {{- if .Values.pullSecret }}
+      imagePullSecrets:
+      - name: {{ .Values.pullSecret }}
+      {{- end }}
+      {{- with .Values.hubconfig.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
