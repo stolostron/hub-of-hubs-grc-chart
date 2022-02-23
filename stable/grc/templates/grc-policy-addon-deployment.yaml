@@ -87,8 +87,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        - name: SIMULATION_MODE
-          value: "on"
         - name: CERT_POLICY_CONTROLLER_IMAGE
           value: {{ .Values.global.imageOverrides.cert_policy_controller }}
         - name: IAM_POLICY_CONTROLLER_IMAGE
