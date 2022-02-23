@@ -6,6 +6,12 @@ global:
   imageOverrides:
     governance_policy_propagator: ""
     governance_policy_addon_controller: ""
+    cert_policy_controller: ""
+    iam_policy_controller: ""
+    config_policy_controller: ""
+    governance_policy_spec_sync: ""
+    governance_policy_status_sync: ""
+    governance_policy_template_sync: ""
     grc_ui: ""
     grc_ui_api: ""
     kube_rbac_proxy: ""

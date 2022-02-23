@@ -89,6 +89,18 @@ spec:
               fieldPath: metadata.name
         - name: SIMULATION_MODE
           value: "on"
+        - name: CERT_POLICY_CONTROLLER_IMAGE
+          value: {{ .Values.global.imageOverrides.cert_policy_controller }}
+        - name: IAM_POLICY_CONTROLLER_IMAGE
+          value: {{ .Values.global.imageOverrides.iam_policy_controller }}
+        - name: CONFIG_POLICY_CONTROLLER_IMAGE
+          value: {{ .Values.global.imageOverrides.config_policy_controller }}
+        - name: GOVERNANCE_POLICY_SPEC_SYNC_IMAGE
+          value: {{ .Values.global.imageOverrides.governance_policy_spec_sync }}
+        - name: GOVERNANCE_POLICY_STATUS_SYNC_IMAGE
+          value: {{ .Values.global.imageOverrides.governance_policy_status_sync }}
+        - name: GOVERNANCE_POLICY_TEMPLATE_SYNC_IMAGE
+          value: {{ .Values.global.imageOverrides.governance_policy_template_sync }}
         image: {{ .Values.global.imageOverrides.governance_policy_addon_controller }}
         imagePullPolicy: "{{ .Values.global.pullPolicy }}"
         name: manager
