@@ -123,7 +123,7 @@ rules:
   - cert-policy-controller
   - config-policy-controller
   - iam-policy-controller
-  - policy-framework
+  - governance-policy-framework
   resources:
   - leases
   verbs:
@@ -131,6 +131,16 @@ rules:
   - list
   - patch
   - update
+  - watch
+- apiGroups:
+  - ""
+  resourceNames:
+  - policy-encryption-key
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
   - watch
 - apiGroups:
   - policy.open-cluster-management.io
