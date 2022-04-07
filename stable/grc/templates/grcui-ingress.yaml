@@ -69,3 +69,10 @@ spec:
               number: 3000
         path: /multicloud/common/version
         pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: {{ .Release.Name }}-grcui
+            port:
+              number: 3000
+        path: /
+        pathType: ImplementationSpecific
